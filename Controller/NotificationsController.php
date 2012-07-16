@@ -85,11 +85,11 @@ class NotificationsController extends NotificationsAppController {
      * @return void 
      */
     public function markallread() {
-        if ($this->Notification->updateAll(array('is_read' => 1), array('user_id' => AuthComponent::user('id')))) {
+        if ($this->Notification->markAllRead()) {
             $this->Session->setFlash(__('Marked all read'));
-            $this->redirect(array('action' => 'index'));
+        } else {
+            $this->Session->setFlash(__('Failed to mark all read'));
         }
-        $this->Session->setFlash(__('Notification was not deleted'));
         $this->redirect(array('action' => 'index'));
     }
 
