@@ -1,4 +1,5 @@
-cakephp-bootstrap-notifications
+Cakephp/Bootstrap Notification plugin
 ===============================
 
-Notification system in a plugin inspired by the Facebook notifications. For CakePHP applications using the Twitter Bootstrap user interface
+This plugin is inspired by the Facebook notifications. It is to be used in CakePHP applications that use the Twitter Bootstrap user interface.
+
