@@ -85,7 +85,7 @@ class NotificationsController extends NotificationsAppController {
      * @return void 
      */
     public function markallread() {
-        if ($this->Notification->markAllRead()) {
+        if ($this->Notification->markAllRead(AuthComponent::user('id'))) {
             $this->Session->setFlash(__('Marked all read'));
         } else {
             $this->Session->setFlash(__('Failed to mark all read'));

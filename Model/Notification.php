@@ -46,8 +46,8 @@ class Notification extends NotificationsAppModel {
         }
     }
 
-    function markAllRead() {
-        if ($this->updateAll(array('is_read' => 1), array('user_id' => AuthComponent::user('id')))) {
+    function markAllRead($user_id) {
+        if ($this->updateAll(array('is_read' => 1), array('user_id' => $user_id))) {
             return true;
         } else {
             return false;
