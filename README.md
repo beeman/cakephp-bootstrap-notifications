@@ -1,4 +1,4 @@
-Cakephp/Bootstrap Notification plugin
+CakePHP/Bootstrap Notification plugin
 ===============================
 
 This plugin is inspired by the Facebook notifications. It is to be used in CakePHP applications that use the Twitter Bootstrap user interface.
@@ -63,5 +63,10 @@ Modifiy the login() method in the UsersController, enter the next rule direct be
 
 Now when you login you should get a notification from it.
 
+Todo
+----------------------
+- Make it easy to automatically add notifications to a model
+- Make it easier to add notifications from a controller
+- Maybe use the JsHelper to write the Javascript that is now in View/Elements/NotificationInit.ctp ? 
 
   [1]: http://i.imgur.com/z7ZDw.png
