@@ -55,7 +55,7 @@ public $hasMany = array(
 Adding notifications to your system
 ----------------------
 
-In this example we will give the user a notification when it logs in or when there is a login error.
+In this example we will give the user a notification when it logs in.
 
 Modifiy the login() method in the UsersController, enter the next rule direct below '$this->Auth->login()'
 
