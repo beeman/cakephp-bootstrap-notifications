@@ -1,0 +1,45 @@
+
+.notifications .dropdown-menu {
+}
+.notifications .dropdown-menu a {
+    padding: 8px 12px 8px 8px;
+}
+.notifications .notification-item.unread {
+    background: #f0f0f0;
+}
+
+.notifications .notification-item .avatar {
+    width: 34px; 
+    height: 34px; 
+    background: url('../img/avatar.jpg');
+    border: 1px solid #eee; 
+    float: left; 
+    margin-right: 8px; 
+}
+.notifications .notification-item .timestamp {
+    text-align: right; 
+    font-size: smaller;
+}
+.notifications .notification-counter {
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+
+    position: absolute;
+    top: -5px;
+    right:-6px;
+    z-index: 101;
+
+    background-color: #F03D25;
+    border: 1px solid #D83722;
+    border-bottom: 1px solid #C0311E;
+    border-top: 1px solid #E23923;
+    -webkit-border-radius: 2px;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 39, 121, .77);
+    display: block;
+    padding: 0px 2px 0px 1px;
+
+    height: 14px;
+    line-height: 14px;
+
+}
