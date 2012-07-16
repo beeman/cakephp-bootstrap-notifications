@@ -33,9 +33,9 @@ class Notification extends NotificationsAppModel {
         }
     }
 
-    function msg($user_id, $message, $type = null, $target = null) {
+    function msg($userId, $message, $type = null, $target = null) {
         $data = array();
-        $data['Notification']['user_id'] = $user_id;
+        $data['Notification']['user_id'] = $userId;
         $data['Notification']['message'] = $message;
         $data['Notification']['type'] = $type;
         $data['Notification']['target'] = $target;
@@ -46,8 +46,15 @@ class Notification extends NotificationsAppModel {
         }
     }
 
-    function markAllRead($user_id) {
-        if ($this->updateAll(array('is_read' => 1), array('user_id' => $user_id))) {
+    function markAllRead($userId) {
+        $fields = array(
+            $this->alias . '.is_read' => 1
+        );
+        $conditions = array(
+            $this->alias . '.is_read' => 0,
+            $this->alias . '.user_id' => $userId
+        );
+        if ($this->updateAll($fields, $conditions)) {
             return true;
         } else {
             return false;
