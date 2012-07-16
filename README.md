@@ -3,7 +3,12 @@ Cakephp/Bootstrap Notification plugin
 
 This plugin is inspired by the Facebook notifications. It is to be used in CakePHP applications that use the Twitter Bootstrap user interface.
 
-Installation
+This is how it looks
+----------------------
+
+![Notification Screenshot][1]
+
+The installation
 ----------------------
 
  - Checkout the code
@@ -57,3 +62,6 @@ Modifiy the login() method in the UsersController, enter the next rule direct be
 `$this->User->Notification->msg(AuthComponent::user('id'), "You logged in!");`
 
 Now when you login you should get a notification from it.
+
+
+  [1]: http://i.imgur.com/z7ZDw.png
