@@ -39,7 +39,19 @@ or add as submodule:
 
  - Add the Notification Icon to the bootstrap navigation bar
 
+To just show the notifications, add this line:
+
 `<?php echo $this->Element('Notifications.NotificationIcon'); ?>`
+
+Or add a link to clear notifications and a link to where your application shows all the notifications
+
+```php
+echo $this->Element('Notifications.NotificationIcon', array(
+    'all_notifications' => array('controller' => 'dashboard', 'action' => 'notifications'),
+    'clear_notifications' => true,
+        )
+);
+```
 
  - Associate Notifications to User object
 
