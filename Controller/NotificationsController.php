@@ -5,20 +5,7 @@ App::uses('NotificationsAppController', 'Notifications.Controller');
 class NotificationsController extends NotificationsAppController {
 
     /**
-     * index method
-     *
-     * @return void
-     */
-    public function index() {
-        $this->Notification->recursive = 0;
-        $this->paginate = array(
-            'order' => array('created' => 'desc')
-        );
-        $this->set('data', $this->paginate('Notification', array('user_id' => AuthComponent::user('id'))));
-    }
-
-    /**
-     * read method
+     * read method. Marks the notification read and redirects to the target (if any)
      *
      * @throws NotFoundException
      * @param string $id
@@ -37,7 +24,7 @@ class NotificationsController extends NotificationsAppController {
         $item = $this->Notification->read(null, $id);
 
         if (!isset($item['Notification']['target'])) {
-            $target = $this->redirect(array('action' => 'index'));
+            $target = $this->redirect($this->referer('/'));
         } else {
             $target = $this->redirect($item['Notification']['target']);
         }
@@ -45,7 +32,7 @@ class NotificationsController extends NotificationsAppController {
     }
 
     /**
-     * delete method
+     * delete method. Deletes a single notification
      *
      * @throws MethodNotAllowedException
      * @throws NotFoundException
@@ -59,10 +46,10 @@ class NotificationsController extends NotificationsAppController {
         }
         if ($this->Notification->delete()) {
             $this->Session->setFlash(__('Notification deleted'));
-            $this->redirect(array('action' => 'index'));
+            $this->redirect($this->referer('/'));
         }
         $this->Session->setFlash(__('Notification was not deleted'));
-        $this->redirect(array('action' => 'index'));
+        $this->redirect($this->referer('/'));
     }
 
     /**
@@ -73,10 +60,10 @@ class NotificationsController extends NotificationsAppController {
     public function deleteall() {
         if ($this->Notification->deleteAll(array('user_id' => AuthComponent::user('id')))) {
             $this->Session->setFlash(__('Notification deleted'));
-            $this->redirect(array('action' => 'index'));
+            $this->redirect($this->referer('/'));
         }
         $this->Session->setFlash(__('Notification was not deleted'));
-        $this->redirect(array('action' => 'index'));
+        $this->redirect($this->referer('/'));
     }
 
     /**
@@ -90,22 +77,18 @@ class NotificationsController extends NotificationsAppController {
         } else {
             $this->Session->setFlash(__('Failed to mark all read'));
         }
-        $this->redirect(array('action' => 'index'));
+        $this->redirect($this->referer('/'));
     }
 
     /**
      * API functions that gets the number of notifications
      * 
-     * @param type $user_id 
+     * @param type $userId 
      */
-    public function getcount($user_id = null) {
+    public function getcount($userId = null) {
         $this->layout = 'ajax';
-        $result = null;
-
-        $result = $this->Notification->find('count', array('conditions' => array('is_read' => 0, 'user_id' => $user_id)));
-
-        if ($user_id && $user_id == AuthComponent::user('id')) {
-            $this->set('result', $result);
+        if ($userId && $userId == AuthComponent::user('id')) {
+            $this->set('result', $this->Notification->getCount($userId));
         } else {
             $this->set('result', null);
         }
@@ -116,20 +99,10 @@ class NotificationsController extends NotificationsAppController {
      * 
      * @param type $user_id 
      */
-    public function getlist($user_id = null, $limit = 10) {
+    public function getlist($userId = null, $limit = 10) {
         $this->layout = 'ajax';
-        $result = null;
-
-        $options = array(
-            'conditions' => array('is_read' => 0, 'user_id' => $user_id),
-            'order' => array('Notification.created' => 'desc'),
-            'limit' => $limit,
-        );
-
-        $result = $this->Notification->find('all', $options);
-
-        if ($user_id && $user_id == AuthComponent::user('id')) {
-            $this->set('result', $result);
+        if ($userId && $userId == AuthComponent::user('id')) {
+            $this->set('result', $this->Notification->getList($userId, $limit));
         } else {
             $this->set('result', null);
         }

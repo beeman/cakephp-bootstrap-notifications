@@ -40,21 +40,27 @@ function countNotifications(userid) {
     return false;
 }
     
-    
 function setNotificationItems(content) {
-    var itemlist = $('#notification-items');
-    $(itemlist).html(content);
+    $('.notification-item').remove();
+    var spinner = $('#notification-spinner');
+    $(spinner).after(content);
+    $(spinner).hide();
     return false;
 }
 
 function getNotificationList(userid) {
         
+    $('.notification-item').hide();
+    var spinner = $('#notification-spinner');
+    $(spinner).show();
+    
     var url =  list_url + "/" + userid;
         
     $.ajax({
         url: url,
         cache: false
     }).done(function(result) {
+        
         setNotificationItems(result);
     });
     return false;

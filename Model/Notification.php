@@ -33,9 +33,10 @@ class Notification extends NotificationsAppModel {
         }
     }
 
-    function msg($userId, $message, $type = null, $target = null) {
+    function msg($userId, $message, $type = null, $target = null, $senderId = null) {
         $data = array();
         $data['Notification']['user_id'] = $userId;
+        $data['Notification']['sender_id'] = $senderId;
         $data['Notification']['message'] = $message;
         $data['Notification']['type'] = $type;
         $data['Notification']['target'] = $target;
@@ -59,6 +60,28 @@ class Notification extends NotificationsAppModel {
         } else {
             return false;
         }
+    }
+
+    function getCount($userId) {
+        $options = array(
+            'conditions' => array(
+                $this->alias . '.is_read' => 0,
+                $this->alias . '.user_id' => $userId
+            )
+        );
+        return $this->find('count', $options);
+    }
+
+    function getList($userId, $limit = 10) {
+        $options = array(
+            'conditions' => array(
+                $this->alias . '.user_id' => $userId
+            ),
+            'limit' => $limit,
+            'order' => array('Notification.created' => 'desc'),
+        );
+
+        return $this->find('all', $options);
     }
 
 }
