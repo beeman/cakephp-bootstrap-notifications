@@ -1,10 +1,15 @@
 
 function startNotifications() {
+    // Save the pagetitle
+    pagetitle = $(document).attr('title');
+    
+    // Initial poll
     poll(); 
-        
+
+    // Set poll timer
     setInterval(function(){ 
         poll(); 
-    }, 3000);
+    }, interval);
 
     $('#notification-icon').bind('click', function() {
         getNotificationList(userid);
@@ -17,14 +22,17 @@ function poll() {
 function setNotificationCounter(number) {
     var counter = $('#notification-counter');
     var icon = $('#notification-icon i');
+    var title = pagetitle;
     if(parseInt(number) == 0) {
         $(counter).hide();
         $(icon).removeClass('icon-white');
     } else {
         $(counter).show();
         $(icon).addClass('icon-white');
+        title = '(' + number + ') ' + pagetitle;
     }
     $(counter).html(number);
+    $(document).attr('title', title);
     return false;
 }
     
@@ -41,16 +49,17 @@ function countNotifications(userid) {
 }
     
 function setNotificationItems(content) {
-    $('.notification-item').remove();
+    $('.notification-icon .notification-item').remove();
+    $('.notification-icon .notification-empty').remove();
     var spinner = $('#notification-spinner');
-    $(spinner).after(content);
+    $(spinner).before(content);
     $(spinner).hide();
     return false;
 }
 
 function getNotificationList(userid) {
-        
-    $('.notification-item').hide();
+    $('.notification-icon .notification-item').hide();
+    $('.notification-icon .notification-empty').hide();
     var spinner = $('#notification-spinner');
     $(spinner).show();
     

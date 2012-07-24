@@ -72,13 +72,15 @@ class Notification extends NotificationsAppModel {
         return $this->find('count', $options);
     }
 
-    function getList($userId, $limit = 10) {
+    function getList($userId, $limit = 10, $only_new = true) {
+        $conditions[] = array($this->alias . '.user_id' => $userId);
+        if ($only_new) {
+            $conditions[] = array($this->alias . '.is_read' => 0);
+        }
         $options = array(
-            'conditions' => array(
-                $this->alias . '.user_id' => $userId
-            ),
+            'conditions' => $conditions,
             'limit' => $limit,
-            'order' => array('Notification.created' => 'desc'),
+            'order' => array($this->alias . '.is_read' => 'asc', $this->alias . '.created' => 'desc'),
         );
 
         return $this->find('all', $options);

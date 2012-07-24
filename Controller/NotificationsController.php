@@ -41,15 +41,26 @@ class NotificationsController extends NotificationsAppController {
      */
     public function delete($id = null) {
         $this->Notification->id = $id;
-        if (!$this->Notification->exists()) {
-            throw new NotFoundException(__('Invalid notification'));
-        }
-        if ($this->Notification->delete()) {
-            $this->Session->setFlash(__('Notification deleted'));
+        if ($this->request->is('ajax')) {
+            $this->layout = false;
+            $this->autoRender = false;
+            if (!$this->Notification->exists()) {
+                return 0;
+            }
+            if (!$this->Notification->delete()) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else {
+            if (!$this->Notification->exists()) {
+                throw new NotFoundException(__('Invalid notification'));
+            }
+            if (!$this->Notification->delete()) {
+                $this->Session->setFlash(__('Notification was not deleted'));
+            }
             $this->redirect($this->referer('/'));
         }
-        $this->Session->setFlash(__('Notification was not deleted'));
-        $this->redirect($this->referer('/'));
     }
 
     /**
@@ -58,11 +69,9 @@ class NotificationsController extends NotificationsAppController {
      * @return void 
      */
     public function deleteall() {
-        if ($this->Notification->deleteAll(array('user_id' => AuthComponent::user('id')))) {
-            $this->Session->setFlash(__('Notification deleted'));
-            $this->redirect($this->referer('/'));
+        if (!$this->Notification->deleteAll(array('user_id' => AuthComponent::user('id')))) {
+            $this->Session->setFlash(__('Notifications are not deleted'));
         }
-        $this->Session->setFlash(__('Notification was not deleted'));
         $this->redirect($this->referer('/'));
     }
 
@@ -72,9 +81,7 @@ class NotificationsController extends NotificationsAppController {
      * @return void 
      */
     public function markallread() {
-        if ($this->Notification->markAllRead(AuthComponent::user('id'))) {
-            $this->Session->setFlash(__('Marked all read'));
-        } else {
+        if (!$this->Notification->markAllRead(AuthComponent::user('id'))) {
             $this->Session->setFlash(__('Failed to mark all read'));
         }
         $this->redirect($this->referer('/'));

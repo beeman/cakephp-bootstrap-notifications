@@ -13,8 +13,14 @@
     text-align: center;
     padding: 8px 0px 11px;
 }
+.notifications .notification-item {
+    position: relative;
+}
 .notifications .notification-item a {
     min-height: 50px;
+}
+.notifications .notification-item.unread {
+    background: rgba(200,200,200,0.2);
 }
 .notifications .notification-item .avatar {
     width: 50px; 
@@ -31,6 +37,23 @@
     font-size: 11px;
     color: #999;
 }
+.notifications .notification-item .deletelink {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    color: #999;
+    padding: 0px;
+    display: inherit;
+    min-height: initial;
+    text-align: center;
+    padding: 2px 4px 5px 5px;
+    line-height: 10px;
+}
+
+.notifications .notification-empty {
+    padding: 8px 0px 11px;
+}
+.notifications .notification-empty ,
 .notifications .notification-button {
     text-align: center;
 }
