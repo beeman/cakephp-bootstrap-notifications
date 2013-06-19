@@ -6,7 +6,7 @@
     ?>
 <?php else: ?>
     <li class="notification-empty">
-        <h4>No notifications</h4>
+        <h4>Aucune notification</h4>
     </li>
 <?php endif; ?>
 

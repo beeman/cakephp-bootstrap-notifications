@@ -1,6 +1,6 @@
 <?php
 
-App::uses('NotificationsAppModel', 'Notifications.Model');
+App::uses('NotificationsAppModel', 'Notifications.Model', 'UsersController');
 
 class Notification extends NotificationsAppModel {
 
@@ -91,9 +91,16 @@ class Notification extends NotificationsAppModel {
                 ),
             );
         }
-
-
-        return $this->find('all', $options);
+        $newNotifs = $this->find('all', $options);
+        $notifications = array();
+        foreach ($newNotifs as $notification) {
+            if ($notification['Notification']['sender_id'] != null) {
+                $notification['Sender'] = $this->User->read(null, $notification['Notification']['sender_id']);
+                
+            }
+            $notifications[] = $notification;
+        }
+        return $notifications;
     }
 
 }
