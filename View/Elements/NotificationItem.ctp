@@ -1,7 +1,9 @@
 <?php
 $data['id'] = $notification['Notification']['id'];
-$data['time'] = $this->Time->timeAgoInWords($notification['Notification']['created']);
-$data['sender'] = $notification['Sender']['name'];
+$data['time'] = $this->Time->timeAgoInWords($notification['Notification']['created']->sec);
+if (isset($notification['Sender']['name'])) {
+    $data['sender'] = $notification['Sender']['name'];
+}
 
 $data['message'] = "";
 if (isset($notification['Sender']['name'])) {
@@ -12,7 +14,7 @@ if (isset($notification['Notification']['message'])) {
     $data['message'] = "{$data['message']}{$notification['Notification']['message']}";
 }
 
-if ($notification['Notification']['is_read']) {
+if (isset($notification['Notification']['is_read']) && $notification['Notification']['is_read']) {
     $data['is_read'] = '';
 } else {
     $data['is_read'] = 'unread';
