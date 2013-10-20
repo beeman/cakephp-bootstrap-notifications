@@ -3,7 +3,9 @@
 App::uses('NotificationsAppModel', 'Notifications.Model');
 
 class Notification extends NotificationsAppModel {
-
+    public function isOwnedBy($id, $user) {
+	    return $this->field('id', array('id' => $id, 'user_id' => $user)) === $id;
+	}
     public $virtualFields = array(
         'name' => 'message'
     );
