@@ -114,5 +114,19 @@ class NotificationsController extends NotificationsAppController {
             $this->set('result', null);
         }
     }
+    public function isAuthorized($user) {
+        if (in_array($this->action, array('index','getlist','getcount'))) {
+            return true;
+        }
 
+        // The owner of notification delete or read it
+        if (in_array($this->action, array('delete','read'))) {
+            $notiId = $this->request->params['pass'][0];
+            if ($this->Notification->isOwnedBy($notiId, $user['id'])) {
+                return true;
+            }
+        }
+
+        return parent::isAuthorized($user);
+    }
 }
