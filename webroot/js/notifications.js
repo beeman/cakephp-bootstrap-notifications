@@ -40,8 +40,7 @@ function countNotifications(userid) {
     var base_url = count_url;
     var url =  base_url + "/" + userid;
     $.ajax({
-        url: url,
-        cache: false
+        url: url
     }).done(function(result) {
         setNotificationCounter(result);
     });
@@ -66,8 +65,7 @@ function getNotificationList(userid) {
     var url =  list_url + "/" + userid;
         
     $.ajax({
-        url: url,
-        cache: false
+        url: url
     }).done(function(result) {
         
         setNotificationItems(result);

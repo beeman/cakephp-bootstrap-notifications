@@ -1,6 +1,6 @@
 <?php
 
-App::uses('NotificationsAppModel', 'Notifications.Model');
+App::uses('NotificationsAppModel', 'Notifications.Model', 'UsersController');
 
 class Notification extends NotificationsAppModel {
 
@@ -64,26 +64,43 @@ class Notification extends NotificationsAppModel {
 
     function getCount($userId) {
         $options = array(
-            'conditions' => array(
-                $this->alias . '.is_read' => 0,
-                $this->alias . '.user_id' => $userId
-            )
+            'conditions' => array('is_read' => 0),
+            'conditions' => array('user_id' => $userId),
         );
         return $this->find('count', $options);
     }
 
     function getList($userId, $limit = 10, $only_new = true) {
-        $conditions[] = array($this->alias . '.user_id' => $userId);
         if ($only_new) {
-            $conditions[] = array($this->alias . '.is_read' => 0);
+            $options = array(
+                'conditions' => array('is_read' => 0),
+                'conditions' => array('user_id' => $userId),
+                'limit' => $limit,
+                'order' => array(
+                    'is_read' => 'asc',
+                    'created' => 'desc'
+                ),
+            );
+        } else {
+            $options = array(
+                'conditions' => array('user_id' => $userId),
+                'limit' => $limit,
+                'order' => array(
+                    'is_read' => 'asc',
+                    'created' => 'desc'
+                ),
+            );
         }
-        $options = array(
-            'conditions' => $conditions,
-            'limit' => $limit,
-            'order' => array($this->alias . '.is_read' => 'asc', $this->alias . '.created' => 'desc'),
-        );
-
-        return $this->find('all', $options);
+        $newNotifs = $this->find('all', $options);
+        $notifications = array();
+        foreach ($newNotifs as $notification) {
+            if ($notification['Notification']['sender_id'] != null) {
+                $notification['Sender'] = $this->User->read(null, $notification['Notification']['sender_id']);
+                
+            }
+            $notifications[] = $notification;
+        }
+        return $notifications;
     }
 
 }
